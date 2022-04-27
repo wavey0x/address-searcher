@@ -1,8 +1,8 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const db = require('./queries');
-const https = require("https");
-const fs = require("fs");
+const https = require('https');
+const fs = require('fs');
 const app = express()
 
 const port = 3001
@@ -22,19 +22,25 @@ app.use(
   })
 )
 
+let options = {}
+if(process.env.ENV == "PROD"){
+    let key = fs.readFileSync('/etc/letsencrypt/live/wavey.info/privkey.pem');
+    let cert = fs.readFileSync('/etc/letsencrypt/live/wavey.info/fullchain.pem');
+    options = {
+        key: key,
+        cert: cert
+    };
+}
+
+const server = https.createServer(options, app);
+
 app.get('/', (request, response) => {
     response.json({ info: 'Node.js, Express, and Postgres API' })
 })
 
 app.get('/addresses', db.getAddresses)
 
-https.createServer(
-    {
-      key: fs.readFileSync("server.key"),
-      cert: fs.readFileSync("server.cert"),
-    },
-    app
-    ).listen(port, () => {
+server.listen(port, () => {
     console.log(`App running on port ${port}.`)
 })
 
