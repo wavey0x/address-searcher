@@ -7,7 +7,11 @@ const app = express()
 
 let port = 3001
 
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+const cors = require('cors');
+app.use(cors({
+    origin: '*'
+}));;
 app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin');
     res.header(
