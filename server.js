@@ -30,6 +30,7 @@ if(process.env.ENV == "PROD"){
         key: key,
         cert: cert
     };
+    port = 80;
 }
 
 const server = https.createServer(options, app);
