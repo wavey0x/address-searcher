@@ -20,7 +20,7 @@ class App extends React.Component {
   }
   componentDidMount() {
     // axios.get('http://192.168.1.36:3001/addresses')
-    axios.get('http://34.205.72.180:3001//addresses')
+    axios.get('http://34.205.72.180:3001/addresses')
         .then((results) => {
             console.log(results)
             this.setState({ data: results })
