@@ -52,8 +52,8 @@ class App extends React.Component {
           data={data.data}
           filterable
           defaultFilterMethod={(filter, row) =>
-            String(row[filter.id]) === filter.value}
-          columns={[
+            String(row[filter.id]).toLowerCase().includes(filter.value.toLowerCase())}
+            columns={[
             {
                     Header: "ETH address",
                     accessor: "address",
@@ -81,12 +81,22 @@ class App extends React.Component {
     
             },
             {
+                Header: "Chain ID",
+                accessor: "chain_id"
+
+            },
+            {
+                Header: "Want Token",
+                accessor: "want"
+
+            },
+            {
                 Header: "Strat/Vault",
                 id: 'vaultOrStrat',
                 accessor: data => {
                     if(data.is_strategy) return "Strategy";
                     return "Vault";
-                }//"is_strategy",
+                }
 
             },
             {
