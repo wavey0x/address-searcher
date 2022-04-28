@@ -1,9 +1,8 @@
 import React from "react";
 import { render } from "react-dom";
-// import { makeData, Logo, Tips } from "./Utils";
-import { matchSorter } from 'match-sorter';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCopy } from '@fortawesome/free-solid-svg-icons'
+
+import { faCopy, faBinoculars } from '@fortawesome/free-solid-svg-icons'
 
 
 // Import React Table
@@ -31,19 +30,31 @@ class App extends React.Component {
         });
   }
   copyAddress(e, address){
-    console.log(e)
-    console.log(e.currentTarget)
-    console.log(e.currentTarget.parentNode)
-    const node = e.currentTarget;
-    // const t = e.currentTarget;
-    // const span = document.createElement("SPAN");
-    // const text = document.createTextNode("This is a span element.");
-    // span.appendChild(text);
-    console.log(address);
     navigator.clipboard.writeText(address)
-
-    // t.appendChild(span)
   }
+
+  yearnWatch = (data) => {
+    console.log(data);
+    let url = "";
+    let network;
+    if(data.chain_id === 1){
+        network = "ethereum";
+    }
+    if(data.chain_id === 250){
+        network = "fantom";
+    }
+    if(data.chain_id === 42161){
+        network = "arbitrum";
+    }
+    if(data.vaultOrStrat === "Strategy"){
+        url = `https://yearn.watch/network/${network}/vault/${data.address}/strategy/${data.address}/`
+    }
+    else{
+        url = `https://yearn.watch/network/${network}/vault/${data.address}/`
+    }
+    window.open(url, "_blank")
+  };
+
   render() {
     const { data } = this.state;
     return (
@@ -65,6 +76,11 @@ class App extends React.Component {
                             icon={faCopy}
                             className={"icon__"}
                             onClick={(e)=>this.copyAddress(e, props.value)}//e => {console.log(e)}}//navigator.clipboard.writeText(props.value)}}
+                        /> {" - "}
+                        <FontAwesomeIcon
+                            icon={faBinoculars}
+                            className={"icon__"}
+                            onClick={()=>this.yearnWatch(props.row)}//e => {console.log(e)}}//navigator.clipboard.writeText(props.value)}}
                         /> 
                         <a href={"https://etherscan.io/address/"+ props.value} target="_blank">
                             {"  " + props.value}
